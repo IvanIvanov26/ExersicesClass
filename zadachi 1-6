@@ -1,0 +1,141 @@
+using System;
+namespace ZadachiZaPregovor
+{
+    internal class StartUP
+    {
+        static void Main()
+        {
+            //Zadacha1();
+            //Zadacha2();
+            //Zadacha3();
+            //Zadacha4();
+            Zadacha5();
+        }
+
+        static void  Zadacha1()
+        {
+            int rentOfHall = int.Parse(System.Console.ReadLine());
+            decimal statuesValue = rentOfHall * 0.7m;
+            decimal ceteringValue = statuesValue * 0.85m;
+            var soundValue = ceteringValue / 2;
+            decimal totalCost = rentOfHall + statuesValue + ceteringValue + soundValue;
+            System.Console.WriteLine($"Otgovorut e {totalCost:F2}");
+        }
+
+        static void Zadacha2()
+        {
+            decimal budget = decimal.Parse(System.Console.ReadLine());
+            int statistsNumber = int.Parse(System.Console.ReadLine());
+            decimal statistClothingPrice = decimal.Parse(System.Console.ReadLine());
+            decimal decorationPrice = budget * 0.1m;
+            
+
+            if (statistsNumber > 150)
+            {
+                statistClothingPrice = statistClothingPrice * 0.9m;
+            }
+
+            decimal totalForClothing = statistsNumber * statistClothingPrice;
+            decimal totalMoneyNeeded = totalForClothing + decorationPrice;
+
+            if (totalMoneyNeeded > budget)
+            {
+                decimal moneyNeeded = totalMoneyNeeded - budget;
+                System.Console.WriteLine($"Not enough money!");
+                System.Console.WriteLine($"Wingard needs {moneyNeeded:f2} leva more.");
+            }
+            else
+            {
+                decimal moneyLeft = budget - totalMoneyNeeded;
+                System.Console.WriteLine($"Action!");
+                System.Console.WriteLine($"Wingard starts filming with {moneyLeft:f2} leva left.");
+
+            }
+        }
+
+        static void Zadacha3()
+        {
+            
+        }
+        private static void Zadacha4()
+        {
+            int voucher = int.Parse(Console.ReadLine());
+
+            int price = 0;
+            int ticketNumber = 0;
+            int otherNumber = 0;
+
+            string product = Console.ReadLine();
+
+            while (product != "End")
+            {
+                if (product.Length > 8)
+                {
+                    price = product[0] + product[1];
+
+                    if (voucher >= price)
+                    {
+                        voucher -= price;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    ticketNumber++;
+                }
+                else
+                {
+                    price = product[0];
+
+                    if (voucher >= price)
+                    {
+                        voucher -= price;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                    otherNumber++;
+                }
+                product = Console.ReadLine();
+            }
+            Console.WriteLine(ticketNumber);
+            Console.WriteLine(otherNumber);
+        }
+
+        private static void Zadacha5()
+        {
+            int movieNumb = int.Parse(Console.ReadLine());
+
+            string movieName = "";
+            double movieRating = 0;
+
+            double minRating = double.MaxValue;
+            string movieMaxRating = "";
+            double maxRating = double.MinValue;
+            string movieMinRating = "";
+            double avvRating = 0;
+
+            for (int i = 0; i < movieNumb; i++)
+            {
+                movieName = Console.ReadLine();
+                movieRating = double.Parse(Console.ReadLine());
+                if (movieRating > maxRating)
+                {
+                    maxRating = movieRating;
+                    movieMaxRating = movieName;
+                }
+                if (movieRating < minRating)
+                {
+                    minRating = movieRating;
+                    movieMaxRating = movieName;
+                }
+                avvRating += movieRating;
+            }
+            Console.WriteLine($"{movieMaxRating} {maxRating:f1}");
+            Console.WriteLine($"{movieMinRating} {minRating:f1}");
+            Console.WriteLine($"Average rating: {avvRating / movieNumb:f1}");
+
+        }
+    }
+}
