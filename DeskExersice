@@ -1,0 +1,38 @@
+namespace DeskExersice
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Desk d1 = new Desk();
+            Desk d2 = new Desk();
+
+            d1.Weigh = 50;
+            d1.Color = "Green";
+            d1.Material = "Wood";
+            d1.AveibleCount = 40;
+            d1.Price = 35.99;
+            d1.presentInfo();
+        }
+
+        public class Desk
+        {
+            double weigh;
+            string color;
+            string material;
+            int avaibleCount;
+            double price;
+
+            public double Weigh { get => weigh; set => weigh = value; }
+            public string Color { get => Color; set => color = value; }
+            public string Material { get => material; set => material = value; }
+            public int AveibleCount { get => avaibleCount; set => avaibleCount = value; }
+            public double Price { get => price; set => price = value; }
+
+            public void presentInfo()
+            {
+                Console.WriteLine($"Бюро от {material},с цвят {color}, тежи {weigh}kg. е на цена {price}lv. и са останали {avaibleCount} бройки.");
+            }
+        }
+    }
+}
