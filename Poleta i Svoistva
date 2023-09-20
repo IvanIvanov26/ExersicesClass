@@ -1,0 +1,27 @@
+using System;
+
+namespace Definirane_Na_Poleta_I_Svoistva
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Dice d1 = new Dice();
+
+            Dice d2 = new Dice();
+
+            d1.Sides = 7;
+            d2.Sides = 3;
+
+            Console.WriteLine("Number of sids of d1: " + d1.Sides);
+            Console.WriteLine("Number of sids of d2: " + d2.Sides);
+        }
+    }
+
+    public class Dice
+    {
+        int sides;
+
+        public int Sides { get => sides; set => sides = 2 * value; }
+    }
+}
