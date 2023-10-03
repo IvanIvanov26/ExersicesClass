@@ -1,0 +1,62 @@
+namespace CandyShop
+{
+    internal class Program
+    {
+        static void Main()
+        {
+            
+        }
+    }
+    public class Candy
+    {
+        private string name;
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        public int Calories { get; set; }
+        public double Weight { get; set; }
+        public decimal PriceUSD { get; set; }
+        private int Ammount { get; set; }
+        private int TotalSold { get; set; }
+
+        public bool IsVeganAcceptable { get; set; } = false;
+
+        public Candy(string name, int calories)
+        {
+
+        }
+        public Candy(string name, int calories, double weight)
+        {
+
+        }
+        public Candy(string name, int calories, double weight, decimal priceUSD)
+        {
+
+        }
+        public Candy(string name, int calories, double weight, decimal priceUSD, FamilyType familyType)
+        {
+
+        }
+
+        public void IncreaseAmmount(int ammount)
+        {
+
+        }
+        public void SellAmmount(int ammount)
+        {
+
+        }
+    }
+
+    public enum FamilyType
+    {
+        Bonbon,
+        Cake,
+        Licorice,
+        Pretsels,
+        ShugarMagic,
+        FruitPower
+    }
+}
