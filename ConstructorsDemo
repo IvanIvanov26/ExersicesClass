@@ -1,0 +1,199 @@
+using System.Globalization;
+using System.Net.Http.Headers;
+using System.Security.Cryptography.X509Certificates;
+
+namespace ConstructorsDemo
+{
+    internal class Program
+    {
+        static void Main()
+        {
+            var man = new Manufacturer();
+            man.Name = "Georgi";
+            var man2 = new Manufacturer("Atanas", "0885434131");
+            var man3 = new Manufacturer("Hristiqn", "+359-887-54-86", "vuzduh.com", "hristiqn@abv.bg");
+
+
+
+            var manufacturers = new List<Manufacturer>()
+            {
+                new Manufacturer()
+                {
+                    Id = 1,
+                    Name = "LEX",
+                    Telephone = "0883368043",
+                    Email = "lex@yahoo.com",
+                    WebSiteURL = "www.lex-company.com"
+                },
+                new Manufacturer()
+                {
+                    Id = 2,
+                    Name = "Krasi",
+                    Telephone = "0883368999",
+                    Email = "krasi-white-magic@abv.bg",
+                    WebSiteURL = "www.krasi-plant.com"
+                },
+            };
+            manufacturers.Add(new Manufacturer("Krasimir", "0897885869"));
+            manufacturers.Add(new Manufacturer("Preslav", "0892156348"));
+            manufacturers.Add(new Manufacturer("Venceslav", "0889963548"));
+            manufacturers.Add(new Manufacturer("Jack&Jones", "0897885869"));
+            manufacturers.Add(new Manufacturer("Johnnie Walker", "0875968458"));
+
+
+
+            var products = new List<Product>();
+            products.Add(new Product()
+            {
+                Name = "Прах за пране LEX",
+                Description = "Хитрият начина за пране LEX, REX и т.н....",
+                Price = 12.43m,
+                WeightKg = 2,
+                ProductType = ProductType.CleaningSupplies,
+                Manufacturer = manufacturers[0],
+                ExpirationDate = DateTime.ParseExact("02-10/2024", "dd-MM/yyyy", CultureInfo.InvariantCulture),
+            });
+            products.Add(new Product("Hrana za kucheta", 5.76m, ProductType.AnimalFood, 2.5d, "25-12/2023", "Granuli lesni za smilane", manufacturers[2]));
+
+            
+            var animal1 = new Animal() { Name = "Sharo" };
+            var animal2 = new Animal("Alex", 3);
+
+            var product = new List<Product>()
+            {
+                new Product("Wiskey", 19.99m, ProductType.BeverageAlcohol, 0.7d, "03-12/2099", "Alcohol", manufacturers[6]),
+                new Product("Pepsi", 2.99m, ProductType.BeverageNonAlcohol, 2d, "03-12/2024", "NonAlcohol", manufacturers[2]),
+                new Product("Kibabche", 2.5m, ProductType.Food, 0.5d, "03-12/2023", "Food", manufacturers[3]),
+                new Product("Medix", 3m, ProductType.CleaningSupplies, 5d, "03-12/2099", "CleaningSupplies", manufacturers[4]),
+                new Product("Jack&Jones", 99.99m, ProductType.Clothing, 0.2d, "03-12/3000", "Clothing", manufacturers[5]),
+
+            };
+        }
+    }
+
+    public class Product
+    {
+        public decimal Price { get; set; }
+        public DateTime ExpirationDate { get; set; }
+        public double WeightKg { get; set; }
+        public string Description { get; set; }
+        public ProductType ProductType { get; set; }
+
+        private string name;
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        public Manufacturer Manufacturer { get; set; }
+        public bool isOnSale { get; set; } = false;
+
+        public Product()
+        {
+            Manufacturer = new Manufacturer("Rodea", "+359-889-56-12-96");
+        }
+        public Product(string name, decimal price, ProductType productType, double weightKg,
+            string expirationDate, string description, Manufacturer manufacturer)
+        {
+            Name = name;
+            Price = price;
+            WeightKg = weightKg;
+            Description = description;
+            ExpirationDate = DateTime.ParseExact(expirationDate, "dd-MM/yyyy", CultureInfo.InvariantCulture);
+            ProductType = ProductType;
+            Manufacturer = manufacturer;
+        }
+        public void SetThisItemOnSale()
+        {
+            isOnSale = true;
+        }
+        public void PrintData()
+        {
+            if (isOnSale)
+            {
+                Console.WriteLine("HOW - DEALS - BLACK FRIDAY");
+            }
+            Console.WriteLine($"Details about product: {Name}.");
+            Console.WriteLine(new string('=', 20));
+            Console.WriteLine($"Type of product: {ProductType.ToString()}.");
+            Console.WriteLine($"Weight of product: {WeightKg * 1000}grams.");
+            Console.WriteLine($"Expiration date of product: {ExpirationDate.ToString("dd (dddd).MM[yyyy]")}");
+            var timeFrame = (ExpirationDate - DateTime.UtcNow);
+            Console.WriteLine($"Expires after: {timeFrame.Days} days.");
+            Console.WriteLine(new String('=', 20));
+            Console.WriteLine($"About product info {Description}.");
+            Console.WriteLine();
+        }
+
+        
+    }
+
+    public enum ProductType
+    {
+        Food, AnimalFood, BeverageAlcohol, BeverageNonAlcohol, CleaningSupplies, Clothing
+    }
+
+    public class Manufacturer
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "Asen";
+        public string WebSiteURL { get; set; }
+        private string telephone;
+        public string Telephone { get => telephone; set => telephone = value; }
+        public string Email { get; set; }
+
+        public Manufacturer()
+        {
+            Name = "Genadi";
+        }
+        public Manufacturer(string name, string phoneNumber)
+        {
+            Name = name;
+            Telephone = phoneNumber;
+        }
+
+        public Manufacturer(string name, string webSiteURL, string telephone, string email)
+        {
+            Name = name;
+            WebSiteURL = webSiteURL;
+            this.telephone = telephone;
+            Email = email;
+        }
+
+        public void ChangeName()
+        {
+            Name = "Mitko";
+        }
+
+
+    }
+
+    public class Animal
+    {
+        public Animal()
+        {
+            Console.WriteLine("A");
+            ProductsUsed = new List<Product>();
+        }
+
+        public Animal(string name)
+        {
+            Console.WriteLine("B");
+            Name = name;
+        }
+
+        public Animal(string name, int age) : this(name)
+        {
+            Console.WriteLine("C");
+            Age = age;
+        }
+
+        public List<Product> ProductsUsed { get; set; }
+        public string Name { get; set; }
+        public int Age { get; set; }
+
+    }
+
+
+}
