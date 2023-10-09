@@ -1,0 +1,119 @@
+namespace KursuvaZadacha
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Hero h1 = new Hero("Hero1", Fraction.Mage);
+            Hero h2 = new Hero("Hero2", Fraction.Knight);
+
+            Console.WriteLine($"{h1.Name}(Level {h1.Level}) VS {h2.Name}(Level {h2.Level})");
+
+            while(h1.Health > 0 && h2.Health) 
+        }
+    }
+    class Hero
+    {
+        private double attackCoef = 15;
+        private double defenceCoef = 20;
+
+        public string Name { get; } 
+        public Fraction Fraction { get; set; }
+        public int Level { get; set; }
+        public double Health { get; private set; }
+        public double Stamina { get; private set; }
+        public double Mana { get; private set; }
+
+        public List<Item> ItemSet { get; }
+
+        public Hero(string name, Fraction fraction)
+        {
+            Name = name;
+            Fraction = fraction;
+            Level = 0;
+            Health = 100;
+            Stamina = 100;
+            Mana = 100;
+        }
+
+        public int LevelUp()
+        {
+            Level++;
+            Health = 100;
+            Stamina = 100;
+            Mana = 100;
+            return Level;
+        }
+
+        public double GetAttack()
+        {
+            double totalAttack = 0;
+            foreach (var item in ItemSet)
+            {
+                totalAttack += item.Attack;
+            }
+            return (Level * attackCoef) + totalAttack;
+        }
+
+        public double GetDeffence()
+        {
+            double totalDeffence = 0;
+            foreach (var item in ItemSet)
+            {
+                totalDeffence += item.Deffence;
+            }
+            return (Level * defenceCoef) + totalDeffence;
+        }
+
+    }
+
+    public class Item
+    {
+        public string Name { get; }
+        public double Attack { get; set; }
+        public double Deffence { get; set; }
+
+        public Item(string name, double attack, double deffence)
+        {
+            Name = name;
+            if (attack < 0 || attack > 50)
+            {
+                Console.WriteLine("Invalid Attack improvement value");
+            }
+            if (deffence < 0 || deffence > 50)
+            {
+                Console.WriteLine("Invalid Deffence improvement value");
+            }
+            Attack = attack;
+            Deffence = deffence;
+        }
+
+        public void UpgradeAttack(double attack)
+        {
+            if (attack < 0 || attack > 50)
+            {
+                Console.WriteLine("Invalid Attack improvement value");
+            }
+            Attack += attack;
+        }
+        
+        public void UpgradeDeffence(double deffence)
+        {
+            if (deffence < 0 || deffence > 50)
+            {
+                Console.WriteLine("Invalid Deffence improvement value");
+            }
+            Deffence += deffence;
+        }
+
+    }
+
+    public enum Fraction
+    {
+        Mage,
+        Knight,
+        Priest,
+        Ranget,
+        Rogue
+    }
+}
