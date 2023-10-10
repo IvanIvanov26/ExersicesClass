@@ -1,0 +1,156 @@
+using System;
+using System.Collections.Generic;
+
+namespace KursovaZadacha2
+{
+    internal class Program
+    {
+        static void Main()
+        {
+            
+            Hero myHero = CrateMyHero();
+            PrintHeroStats(myHero);
+
+        }
+
+        static Hero CrateMyHero()
+        {
+            Console.Write("Make your Hero! Name:");
+            Hero hero = new Hero(Console.ReadLine(), Fraction.Knight);
+            Console.WriteLine("Your Hero is Knight! ");
+            Console.WriteLine("Make your first item (you need: name, attack and defence): ");
+            Item item1 = new Item(Console.ReadLine(), int.Parse(Console.ReadLine()), int.Parse(Console.ReadLine()));
+            Console.WriteLine("Make your second item (you need: name, attack and defence): ");
+            Item item2 = new Item(Console.ReadLine(), int.Parse(Console.ReadLine()), int.Parse(Console.ReadLine()));
+            hero.ItemSet.Add(item1);
+            hero.ItemSet.Add(item2);
+            
+            return hero;
+        }
+
+        static void PrintHeroStats(Hero hero)
+        {
+            Console.WriteLine($"Hero name: {hero.Name}");
+            Console.WriteLine($"Fraction: {hero.Fraction}");
+            Console.WriteLine($"Level: {hero.Level}");
+            Console.WriteLine($"Health: {hero.Health}");
+            Console.WriteLine($"Stamina: {hero.Stamina}");
+            Console.WriteLine($"Mana: {hero.Mana}");
+            Console.WriteLine($"Hero's Attack: {hero.GetAttack()}");
+            Console.WriteLine($"Hero's Deffence: {hero.GetDefence()}");
+
+            Console.WriteLine();
+            Console.WriteLine("LEVEL UP!!!");
+            hero.LevelUp();
+            Console.WriteLine($"Hero Level after LevelUp: {hero.Level}");
+            Console.WriteLine($"Hero Health after LevelUp: {hero.Health}");
+            Console.WriteLine($"Hero Stamina after LevelUp: {hero.Stamina}");
+            Console.WriteLine($"Hero Mana after LevelUp: {hero.Mana}");
+        }
+    }
+
+    public class Hero
+    {
+        private double attackCoef = 15;
+        private double defenceCoef = 20;
+
+        public string Name { get; }
+        public Fraction Fraction { get; set; }
+        public int Level { get; private set; }
+        public double Health { get; private set; }
+        public double Stamina { get; private set; }
+        public double Mana { get; private set; }
+        public List<Item> ItemSet { get; } = new List<Item>();
+
+        public Hero(string name, Fraction fraction)
+        {
+            Name = name;
+            Fraction = fraction;
+            Level = 1;
+            Health = 100;
+            Stamina = 100;
+            Mana = 100;
+        }
+
+        public int LevelUp()
+        {
+            Level++;
+            Health += 10;
+            Stamina += 10;
+            Mana += 10;
+            return Level;
+        }
+
+        public double GetAttack()
+        {
+            double attack = 0;
+            foreach (var item in ItemSet)
+            {
+                attack += item.Attack;
+            }
+            return attack + Level * attackCoef;
+        }
+
+        public double GetDefence()
+        {
+            double defence = 0;
+            foreach (var item in ItemSet)
+            {
+                defence += item.Defence;
+            }
+            return defence + Level * defenceCoef;
+        }
+    }
+
+    public class Item
+    {
+        public string Name { get; }
+        public double Attack { get; private set; }
+        public double Defence { get; private set; }
+
+        public Item(string name, double atk, double def)
+        {
+            if (atk < 0 || atk > 10 || def < 0 || def > 10)
+            {
+                throw new ArgumentException("Invalid Attack/Defence item value");
+            }
+
+            Name = name;
+            Attack = atk;
+            Defence = def;
+        }
+
+        public void UpgradeAttack(double atk)
+        {
+            if (atk < 0 || atk > 50)
+            {
+                Console.WriteLine("Invalid Attack improvement value");
+            }
+            else
+            {
+                Attack += atk;
+            }
+        }
+
+        public void UpgradeDefence(double def)
+        {
+            if (def < 0 || def > 50)
+            {
+                Console.WriteLine("Invalid Defence improvement value");
+            }
+            else
+            {
+                Defence += def;
+            }
+        }
+    }
+
+    public enum Fraction
+    {
+        Mage,
+        Knight,
+        Priest,
+        Ranged,
+        Rogue
+    }
+}
