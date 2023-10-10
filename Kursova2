@@ -7,13 +7,38 @@ namespace KursovaZadacha2
     {
         static void Main()
         {
+
+            Hero hero1 = CrateMyHero1();
+            Console.WriteLine(new string('_', 60));
+            PrintHeroStats(hero1);
             
-            Hero myHero = CrateMyHero();
-            PrintHeroStats(myHero);
+            Console.WriteLine(new string('=', 60));
+            
+            Hero hero2 = CrateMyHero2();
+            Console.WriteLine(new string('_', 60));
+            PrintHeroStats(hero2);
+
+            Console.WriteLine(new string('=', 60));
+
+            int round = 1;
+            while (hero1.Health > 0 && hero2.Health > 0)
+            {
+                Console.WriteLine($"Round {round}");
+
+                hero1.ReceiveAttack(hero2);
+                hero2.ReceiveAttack(hero1);
+                hero1.PrintStats();
+                hero2.PrintStats();
+                round++;
+
+                Console.WriteLine(new string('=', 15));
+
+
+            }
 
         }
 
-        static Hero CrateMyHero()
+        static Hero CrateMyHero1()
         {
             Console.Write("Make your Hero! Name:");
             Hero hero = new Hero(Console.ReadLine(), Fraction.Knight);
@@ -24,7 +49,24 @@ namespace KursovaZadacha2
             Item item2 = new Item(Console.ReadLine(), int.Parse(Console.ReadLine()), int.Parse(Console.ReadLine()));
             hero.ItemSet.Add(item1);
             hero.ItemSet.Add(item2);
-            
+
+            return hero;
+        }
+
+        
+
+        static Hero CrateMyHero2()
+        {
+            Console.Write("Make your Hero! Name:");
+            Hero hero = new Hero(Console.ReadLine(), Fraction.Knight);
+            Console.WriteLine("Your Hero is Knight! ");
+            Console.WriteLine("Make your first item (you need: name, attack and defence): ");
+            Item item1 = new Item(Console.ReadLine(), int.Parse(Console.ReadLine()), int.Parse(Console.ReadLine()));
+            Console.WriteLine("Make your second item (you need: name, attack and defence): ");
+            Item item2 = new Item(Console.ReadLine(), int.Parse(Console.ReadLine()), int.Parse(Console.ReadLine()));
+            hero.ItemSet.Add(item1);
+            hero.ItemSet.Add(item2);
+
             return hero;
         }
 
@@ -100,6 +142,28 @@ namespace KursovaZadacha2
             }
             return defence + Level * defenceCoef;
         }
+
+        public void ReceiveAttack(Hero attacker)
+        {
+            double damage = attacker.GetAttack() - GetDefence();
+            if (damage > 0)
+            {
+                Health -= damage;
+            }
+        }
+
+        public void PrintStats()
+        {
+            if (Health > 0)
+            {
+                Console.WriteLine($"{Name} - Healt: {Health}");
+            }
+            else
+            {
+                Console.WriteLine($"Your hero {Name} is dead!");
+            }
+
+        }
     }
 
     public class Item
@@ -110,9 +174,9 @@ namespace KursovaZadacha2
 
         public Item(string name, double atk, double def)
         {
-            if (atk < 0 || atk > 10 || def < 0 || def > 10)
+            if (atk < 0 || atk > 25 || def < 0 || def > 25)
             {
-                throw new ArgumentException("Invalid Attack/Defence item value");
+                Console.WriteLine("Invalid Attack/Defence item value");
             }
 
             Name = name;
